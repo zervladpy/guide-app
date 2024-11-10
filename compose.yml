@@ -1,0 +1,48 @@
+services:
+
+  database:
+    container_name: guide-app-postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - PGDATA=/data/postgres
+    volumes:
+      - app-guide-db:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $DATABASE_USER -d $DATABASE_NAME" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - guide-net
+
+  nextjs:
+    container_name: guide-app
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
+    depends_on:
+      - database
+    volumes:
+      - .:/guide-app
+      - /guide-app/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - guide-net
+
+networks:
+  guide-net:
+    driver: bridge
+
+volumes:
+  app-guide-db:

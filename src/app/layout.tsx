@@ -1,6 +1,11 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import {NavigationBar} from "@/components/custom/navigation/navigation-bar";
+import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
+import {AsideBar} from "@/components/custom/aside/aside-bar";
+import {ThemeProvider} from "@/components/theme/theme-provider";
+import React from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,12 +29,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider
+          attribute={"class"}
+          defaultTheme={"system"}
+          enableSystem
+          storageKey="theme"
+        >
+          <SidebarProvider className="flex flex-row">
+            <AsideBar />
+            <section className="flex flex-col w-full">
+              <NavigationBar asideTrigger={<SidebarTrigger />} />
+              {children}
+            </section>
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
+
   );
 }
