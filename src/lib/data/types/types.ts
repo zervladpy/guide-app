@@ -1,57 +1,54 @@
+/**
+ * Default User definition
+ * */
 type User = {
-    id: string
-    name: string
-    avatarUrl: string
-    posts: Post[]
+  id: string;
+  fullName: string;
+  avatarUrl: string;
 }
 
-type Author = {
-    id: string
-    name: string
-    avatarUrl: string
-}
-
-type Post = {
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    title: string
-    published: boolean
-    author: Author
-    content: string | null
-    tags: Tag[]
-}
-
-type PostDto = {
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    title: string
-    author: Author
-    category: Category
-    tags: Tag[]
-}
-
-type Tag = {
-    id: number
-    name: string
-    color: string
-    posts: Post[]
-}
-
+/**
+ * Default Category definition
+ * */
 type Category = {
-    id: number
-    title: string
-    posts: Post[]
-    parent?: Category
-    children: Category[]
+  id: number;
+  title: string;
+  pathName: string;
 }
 
-export type {
-    User,
-    Author,
-    Post,
-    PostDto,
-    Tag,
-    Category,
+/**
+ * Default Tag definition
+ * */
+type Tag = {
+  id: number;
+  title: string;
+  pathName: string;
+  color: string;
 }
+
+/**
+ * Default Post definition
+ * */
+type Post = {
+  id: string;
+  title: string;
+  content: string;
+  published: boolean;
+  category: Category;
+  tags: Tag[];
+  createdAt: Date;
+  updatedAt: Date;
+  author: User;
+}
+
+/**
+ * Basic Post information
+ *  */
+type BasicPostInfo = {
+  id: string,
+  title: string,
+  published: boolean,
+  updatedAt: Date
+}
+
+export type { User, Tag, Category, Post, BasicPostInfo }

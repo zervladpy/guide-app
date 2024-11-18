@@ -11,7 +11,5 @@ RUN npm install
 # Copy all the files (except those ignored by .dockerignore)
 COPY . .
 
-RUN npx prisma generate
-
 # Command to run Next.js in development mode
 ENTRYPOINT ["npm", "run", "dev"]
